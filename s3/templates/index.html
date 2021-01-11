@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} col-md-12">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif%}
+    {% endwith %}
+</div>
+<div class="row">
+    <div class="col-md-8 mt-4">
+        {% if buckets %}
+            <legend class="border-bottom mb-4">Your Buckets</legend>
+            {% for bucket, bucket_form in buckets %}
+            <h5 class="card-header d-flex justify-content-between align-items-center mt-1">
+                <a href="{{ url_for('display_bucket', bucket_name=bucket) }}">{{ bucket}}</a>
+                <form method="POST" action="">
+                    {{ bucket_form.bucket_name() }}
+                    <div class="form-group">
+                        {{ bucket_form.delete(class="btn btn-secondary mt-2")}}
+                    </div>
+                </form>    
+            </h5>
+            {% endfor %}
+        {% else %}
+            <legend class="border-bottom mt-4 mb-4">No Buckets Found</legend>
+        {% endif %}
+    </div>
+    <div class="col-md-4 mt-4 border">
+        <form method="POST" action="">
+            <fieldset class="form-group">
+                <div class="form-group">
+                    <legend class="border-bottom mt-4 mb-4">Create New Bucket</legend>
+                    {% if form.new_bucket_name.errors%}
+                        {{ form.new_bucket_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.new_bucket_name.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.new_bucket_name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.create(class="btn btn-primary")}}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

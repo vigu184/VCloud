@@ -1,0 +1,27 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.btn {
+    background-color: rgb(187,134,252);
+    color: #000000;
+}
+
+.btn:hover{
+    background-color: rgba(187,134,252,0.6)
+}
+.btn:focus{
+    background-color: rgba(187,134,252,0.6)
+}
+
+.btn-secondary {
+    background-color: rgb(207,102,121);
+    color: #000000;
+}
+
+.btn-secondary:hover{
+    background-color: rgba(207,102,121, 0.6)
+}
+.btn-secondary:focus{
+    background-color: rgba(207,102,121, 0.6)
+}

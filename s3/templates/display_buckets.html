@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} col-md-12">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif%}
+    {% endwith %}
+</div>
+<div class="row">
+    <div class="col-md-8 mt-4">
+        {% if files %}
+            <legend class="border-bottom mb-4">Bucket : {{ title }}</legend>
+            {% for filename, delete_form, download_url in files %}
+                <h5 class="card-header d-flex justify-content-between align-items-center mt-1">
+                    {{ filename }}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ download_url }}" class="btn btn-primary" download>Download</a>
+                        <form method="POST" action="">
+                            {{ delete_form.bucket_name() }}
+                            {{ delete_form.file_name() }}
+                                {{ delete_form.delete(class="btn btn-secondary ml-1")}}
+                        </form>    
+                    </div>
+                </h5>
+            {% endfor %}
+        {% else %}
+            <legend class="border-bottom mb-4">No files in Bucket : {{ title }}</legend>
+        {% endif %}
+    </div>
+    <div class="col-md-4 mt-4 border">
+        <form action="" method="post" enctype = "multipart/form-data">
+            <fieldset class="form-group">
+                <div class="form-group">
+                    <legend class="border-bottom mt-4 mb-4">Upload File</legend>
+                    {% if upload_form.file.errors%}
+                        {{ upload_form.file(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in upload_form.file.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ upload_form.file(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ upload_form.upload(class="btn btn-primary")}}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
